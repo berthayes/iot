@@ -1,0 +1,134 @@
+---
+- name: Kafka Provisioning
+  hosts: all
+  remote_user: root
+  gather_facts: false
+  tags: base_install
+  tasks:
+    - name: apt-get update and upgrade
+      apt:
+        update_cache: yes
+        upgrade: full
+        force_apt_get: yes
+    - name: install java and docker
+      apt:
+        name: openjdk-11-jdk, jq, docker, docker-compose, python3, python3-pip
+        state: latest
+        force_apt_get: yes
+    - name: Installing Python Modules
+      pip:
+        name:
+          - ruamel.yaml, yq, psutil
+    - name: Adding user ubuntu to Docker group
+      ansible.builtin.user:
+        name: ubuntu
+        append: true
+        groups: docker
+- name: Configure Confluent REST Proxy
+  hosts: rest_proxy
+  remote_user: root
+  gather_facts: false
+  tags: kafka_rest
+  tasks:
+    - name: Set the hostname to rest-proxy
+      ansible.builtin.hostname:
+        name: rest-proxy
+    - name: Copying create_rest_proxy_docker_compose.py
+      copy:
+        src: create_rest_proxy_docker_compose.py
+        dest: /home/ubuntu/create_rest_proxy_docker_compose.py
+    - name: Copying ccloud-kafka-rest.properties
+      copy:
+        src: ccloud-kafka-rest.properties
+        dest: /home/ubuntu/ccloud-kafka-rest.properties
+    - name: Creating docker-compose.yml file
+      script: create_rest_proxy_docker_compose.py
+      args:
+        executable: python3
+    - name: Starting Docker
+      shell:
+        cmd: docker-compose -f rest-docker-compose.yml up -d
+- name: Configure MQTT Source Connector
+  hosts: kafka_connect_mqtt
+  remote_user: root
+  gather_facts: false
+  tags: kafka_connect
+  tasks:
+    - name: Set the hostname to mqtt-connect
+      ansible.builtin.hostname:
+        name: mqtt-connect
+    - name: Copying create_mqtt_connect_docker_compose_dot_yaml.py
+      copy:
+        src: create_mqtt_connect_docker_compose_dot_yaml.py
+        dest: /home/ubuntu/create_mqtt_connect_docker_compose_dot_yaml.py
+    - name: Copying my-connect-distributed.properties
+      copy:
+        src: my-connect-distributed.properties
+        dest: /home/ubuntu/my-connect-distributed.properties
+    - name: Creating docker-compose.yml file
+      script: create_mqtt_connect_docker_compose_dot_yaml.py
+      args:
+        executable: python3
+    - name: Starting Docker
+      shell:
+        cmd: docker-compose -f docker-compose.yml up -d
+- name: Configure the Prometheus Sink Connector
+  hosts: kafka_connect_prometheus
+  remote_user: root
+  gather_facts: false
+  tags: kafka_connect_prometheus
+  tasks:
+    - name: Set the hostname to prometheus-connect
+      ansible.builtin.hostname:
+        name: prometheus-connect
+    - name: Copying my-connect-distributed.properties to prometheus connect
+      copy:
+        src: my-connect-distributed.properties
+        dest: my-connect-distributed.properties
+    - name: Copying create_prometheus_connect_docker_compose_dot_yaml.py
+      copy:
+        src: create_prometheus_connect_docker_compose_dot_yaml.py
+        dest: /home/ubuntu/create_prometheus_connect_docker_compose_dot_yaml.py
+    - name: Creating docker-compose.yml file
+      script: create_prometheus_connect_docker_compose_dot_yaml.py
+      args:
+        executable: python3
+    - name: Starting Docker
+      shell:
+        cmd: docker-compose -f docker-compose.yml up -d
+- name: Configure the Prometheus Server
+  hosts: prometheus_server
+  remote_user: root
+  gather_facts: false
+  tags: prometheus_server
+  tasks:
+    - name: Set the hostname to prometheus-server
+      ansible.builtin.hostname:
+        name: prometheus-server
+    - name: Copying hosts.yml
+      copy:
+        src: hosts.yml
+        dest: /home/ubuntu/hosts.yml
+    - name: Copying prom_server_default.yml
+      copy:
+        src: prom_server_default.yml
+        dest: prom_server_default.yml
+    - name: Copying make_prometheus_server_config.py
+      copy:
+        src: make_prometheus_server_config.py
+        dest: make_prometheus_server_config.py
+    - name: Creating prometheus.yml
+      script: make_prometheus_server_config.py
+      args:
+        executable: python3
+    - name: installing prometheus
+      apt:
+        name: prometheus
+        state: latest
+        force_apt_get: yes
+    - name: moving Prometheus.yml config file
+      command: mv /home/ubuntu/prometheus.yml /etc/prometheus/prometheus.yml
+    - name: starting prometheus server
+      ansible.builtin.command:
+        cmd: /usr/bin/prometheus --config.file="/home/ubuntu/prometheus.yml"
+

@@ -1,0 +1,24 @@
+{
+  "name": "mqtt-source",
+  "config": {
+         "connector.class": "io.confluent.connect.mqtt.MqttSourceConnector",
+         "tasks.max": "1",
+         "mqtt.server.uri": "tcp://MQTT-SERVER:1883",
+         "mqtt.topics": "MQTT-TOPIC",
+         "kafka.topic": "KAFKA-TOPIC",
+         "mqtt.qos": "2",
+         "confluent.topic.bootstrap.servers": "CCLOUD-BOOTSTRAP",
+         "confluent.topic.replication.factor": "3",
+         "confluent.license": "",
+         "confluent.topic.security.protocol": "SASL_SSL",
+         "confluent.topic.sasl.jaas.config": "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"API-KEY\" password=\"SECRET\";",
+         "confluent.topic.ssl.endpoint.identification.algorithm": "https",
+         "confluent.topic.sasl.mechanism": "PLAIN",
+      	 "confluent.topic": "_confluent-command",
+		 "confluent.topic.retry.backoff.ms": "500",
+      	 "confluent.topic.request.timeout.ms": "60000",
+      	 "value.converter": "org.apache.kafka.connect.converters.ByteArrayConverter",
+      	 "key.converter": "org.apache.kafka.connect.storage.StringConverter"
+
+  }
+}
