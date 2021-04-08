@@ -7,17 +7,7 @@ import tempfile
 import json
 from configparser import ConfigParser
 
-from ruamel.yaml import YAML
-yaml = YAML()
-
-hostinfo = open("hosts.yml", "r")
-ymldata = yaml.load(hostinfo)
-
-hostdict = ymldata['kafka_connect_prometheus']['hosts']
-datadict = dict(hostdict)
-host = list(datadict.keys())[0]
-#print(host)
-host_uri = "http://" + host + ":8889"
+host_uri = "http://0.0.0.0:8889/metrics"
 
 
 connect_conf = "my-connect-distributed.properties"
