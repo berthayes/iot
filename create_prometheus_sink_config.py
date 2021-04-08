@@ -7,6 +7,19 @@ import tempfile
 import json
 from configparser import ConfigParser
 
+from ruamel.yaml import YAML
+yaml = YAML()
+
+hostinfo = open("hosts.yml", "r")
+ymldata = yaml.load(hostinfo)
+
+hostdict = ymldata['kafka_connect_prometheus']['hosts']
+datadict = dict(hostdict)
+host = list(datadict.keys())[0]
+#print(host)
+host_uri = "http://" + host + ":8889"
+
+
 connect_conf = "my-connect-distributed.properties"
 prom_conf_template = "prometheus_config_template.json"
 prom_generated_config = "prom_config.json"
@@ -58,6 +71,7 @@ config_dict['consumer.sasl.jaas.config'] = api_key
 #config_dict['producer.sasl.jaas.config'] = api_key
 config_dict['producer.sasl.jaas.config'] = api_key
 config_dict['bootstrap.servers'] = license_broker
+config_dict['prometheus.listener.url'] = host_uri
 
 
 #print(json.dumps(prom_dict))
