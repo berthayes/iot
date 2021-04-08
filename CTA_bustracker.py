@@ -12,13 +12,15 @@ import json
 # TODO: wrap this in a loop so it runs every minute or so (check AUP)
 
 # Confluent REST Proxy values
-rest_proxy_host = "ec2-52-14-116-180.us-east-2.compute.amazonaws.com"
+# TODO: read the rest proxy host from config file
+rest_proxy_host = ""
 topic = "bustest"
 rest_headers = {'Content-Type': 'application/vnd.kafka.json.v2+json', 'Accept': 'application/vnd.kafka.v2+json'}
 rest_url = "http://" + rest_proxy_host + ":8082/topics/" + topic
 
 # CTA Bus Tracker API values
-api_key = 'HL76TdXUt6YZGmTKSziz3qXyT'
+# TODO: read api_key from config file
+api_key = ''
 getvehicles_url = 'http://ctabustracker.com/bustime/api/v2/getvehicles'
 
 # Format the API request and parse the response
