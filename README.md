@@ -1,6 +1,12 @@
 # IoT & DoT Demo & Quickstart 
 A turnkey environment for sending IoT data to Confluent Cloud.
+- [Overview](https://github.com/berthayes/iot/#Overview)
+- [Create Confluent Cloud Configs](https://github.com/berthayes/iot/#Create-Confluent-Cloud-Configs)
+- [Create Configured Containers](https://github.com/berthayes/iot/#Create-Configured-Containers)
+- [Metrics Data with MQTT](https://github.com/berthayes.iot/#Metrics-Data-with-MQTT)
+- [Transforming Metrics Data for Prometheus with ksqlDB](https://github.com/berthayes/iot/#Transforming-Metrics-Data-for-Prometheus-with-ksqlDB)
 
+## Overview
 This code is designed to spin up and configure four separate EC2 instances as:
   - REST Proxy
   - MQTT Connect Source
@@ -8,10 +14,6 @@ This code is designed to spin up and configure four separate EC2 instances as:
   - Prometheus Server
 
 Once created, these hosts will send/receive data to/from Confluent Cloud.  Data from the Prometheus server can optionally be sent to Grafana.com which has a free tier and includes native Prometheus integration.
-- [Create Confluent Cloud Configs](https://github.com/berthayes/iot/#Create-Confluent-Cloud-Configs)
-- [Create Configured Containers](https://github.com/berthayes/iot/#Create-Configured-Containers)
-- [Metrics Data with MQTT](https://github.com/berthayes.iot/#Metrics-Data-with-MQTT)
-- [Transforming Metrics Data for Prometheus with ksqlDB](https://github.com/berthayes/iot/#Transforming-Metrics-Data-for-Prometheus-with-ksqlDB)
 
 ## Create Confluent Cloud Configs
 
