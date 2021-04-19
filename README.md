@@ -1,13 +1,19 @@
 # IoT & DoT Demo & Quickstart 
 A turnkey environment for sending IoT data to Confluent Cloud.
 
-This code is designed to spin up and configure EC2 instances as:
+This code is designed to spin up and configure four separate EC2 instances as:
   - REST Proxy
   - MQTT Connect Source
   - Prometheus Connect Sink
   - Prometheus Server
 
-Once created, these hosts will send/receive data to/from Confluent Cloud.  Data from the Prometheus server can optionally be sent to Grafana.com which has a free tier which includes native Prometheus integration.
+Once created, these hosts will send/receive data to/from Confluent Cloud.  Data from the Prometheus server can optionally be sent to Grafana.com which has a free tier and includes native Prometheus integration.
+- [Create Confluent Cloud Configs](https://github.com/berthayes/iot/#Create-Confluent-Cloud-Configs)
+- [Create Configured Containers](https://github.com/berthayes/iot/#Create-Configured-Containers)
+- [Metrics Data with MQTT](https://github.com/berthayes.iot/#Metrics-Data-with-MQTT)
+- [Transforming Metrics Data for Prometheus with ksqlDB](https://github.com/berthayes/iot/#Transforming-Metrics-Data-for-Prometheus-with-ksqlDB)
+
+## Create Confluent Cloud Configs
 
 0. Go to your Confluent Cloud Cluster
     CLI and Tools -> Confluent Platform Components -> Rest Proxy [Connect]
@@ -33,7 +39,7 @@ Once created, these hosts will send/receive data to/from Confluent Cloud.  Data 
       - Make sure "show API keys" is checked (default)
       - Copy the provided configuration and save it to a file named ```config.properties``` in this directory.
 
-
+## Create Configured Containers
 
 0. Spin up EC2 instances
     - ```python3 create_aws_instances.py```
@@ -43,23 +49,6 @@ Once created, these hosts will send/receive data to/from Confluent Cloud.  Data 
     - ```python3 create_hosts_dot_yaml.py```
     - ```ansible -i hosts.yml -m ping all```
     - ```ansible-playbook -i hosts.yml all.yml```
-
-This ```all.yml``` playbook also runs specific playbook for different hosts
-
-  - Create docker-compose.yml for MQTT Connect
-    - copy ```my-connect-distributed.properties```
-    - run ```create_connect_docker_compose_dot_yaml.py```
-    - run docker-compose up to start connector
-
-  - Create docker-compose.yml for Prometheus Connect
-    - copy ```my-connect-distributed.properties```
-    - run ```create_connect_docker_compose_dot_yaml.py```
-    - runs docker-compose up to start connector
-    - copy docker-compose.yml for REST Proxy
-    - copy ```ccloud-kafka-rest.properties``` 
-
-  - Create config file for Prometheus Server
-    - Start Prometheus Server which scrapes kafka connect node for metrics
 
 
 ## Metrics data with MQTT
