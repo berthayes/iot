@@ -16,7 +16,7 @@ This code is designed to create and configure four separate EC2 instances as:
 Once created, these hosts will automatically be configured for your cluster in Confluent Cloud.  Data from the Prometheus server can optionally be sent to Grafana.com which has a free tier and includes native Prometheus integration.
 
 ## Create Confluent Cloud Configs
-0. Go to your Confluent Cloud Cluster
+1. Go to your Confluent Cloud Cluster
     CLI and Tools -> Confluent Platform Components -> Rest Proxy [Connect]
     - Create Kafka cluster API key & secret
       - Give it a description
@@ -25,7 +25,7 @@ Once created, these hosts will automatically be configured for your cluster in C
       - make sure "show API keys" is checked (default)
     - Click Copy, and paste the contents into a file and save it as ```ccloud-kafka-rest.properties``` in the samedirectory as these scripts.
     - Do the same for the optional stuff, adding it to the end of ```ccloud-kafka-rest.properties```
-0. CLI and Tools -> Kafka Connect
+1. CLI and Tools -> Kafka Connect
     - Click Distributed
     - Create Kafka cluster API key & secret
       - Give it a description
@@ -34,58 +34,51 @@ Once created, these hosts will automatically be configured for your cluster in C
     - Click the checkbox for "Requires Enterprise License"
       - Make sure "show API keys" is checked (default)
     - Click Copy, and paste the contents into a file named ```my-connect-distributed.properties```
-0. CLI and Tools -> CLI Tools
+1. CLI and Tools -> CLI Tools
     - Click Create API & Secret
       - Give the key a description
       - Make sure "show API keys" is checked (default)
       - Copy the provided configuration and save it to a file named ```config.properties``` in this directory.
 
 ## Create Configured Containers
-0. Spin up EC2 instances
+1. Spin up EC2 instances
     - ```python3 create_aws_instances.py```
-0. Give a minute for the instances to spin up.  Pet the dog/cat.
+1. Give a minute for the instances to spin up.  Pet the dog/cat.
 
-0. Run basic host update stuff with Ansible & configure all nodes for their roles
+1. Run basic host update stuff with Ansible & configure all nodes for their roles
     - ```python3 create_hosts_dot_yaml.py```
     - ```ansible -i hosts.yml -m ping all```
     - ```ansible-playbook -i hosts.yml all.yml```
 
 
 ## Metrics data with MQTT
-
-### Generating sample data with cpu2mqtt.py  script.
+The Confluent MQTT Source connector assumes that you already have an MQTT broker deployed.
  - The default config in ```yak_shaving.conf``` is to use a free demo MQTT broker brovided by Hive MQ
   - Edit ```[mqtt-connect]``` section to change the ```mqtt_server```
-  - The included ```cpu2mqtt.py``` python script uses the psutil and paho.mqtt python libraries to read CPU stats and send them to an MQTT broker
-    - ```python3 cpu2mqtt.py```
-    - The script uses your system hostname (e.g. the output from /bin/hostname) as the MQTT topic name.
-    - You can verify that data is being sent to the HiveMQ broker by going to
-        http://www.hivemq.com/demos/websocket-client/
-        or running
-        ```
-        mosquitto_sub -h broker.hivemq.com -t 'HOSTNAME/#' -p 1883 -v
-        ```
-        - where ```HOSTNAME``` is e.g. the output of /bin/hostname
-
-0. Create a connect config file for the MQTT connector
+  
+### Starting the MQTT Source Connector
+1. Create the ```mqtt-connect``` topic in Confluent Cloud
+  - In Confluent Cloud, go to Topics and click "Add a topic"
+  - Create a new topic named mqtt-connect
+1. Create a connect config file for the MQTT connector
   - ```python3 create_mqtt_config.py```
   - This creates a file aclled ```mqtt_config.json```
   - This file is configured with the .properties files downloaded from Confluent Cloud.
-0. Create the ```mqtt-connect``` topic in Confluent Cloud
-  - In Confluent Cloud, go to Topics and click "Add a topic"
-  - Create a new topic named mqtt-connect
-  
-  OR
-
-  - In Confluent Cloud, go to CLI and Tools -> CCloud and CLI.
-  - Follow steps 1 - 6 and create a topic called mqtt-connect
-  ```
-  ccloud kafka topic create mqtt-connect
-  ```
-
-0. Start the MQTT source connector
+1. Start the MQTT source connector
   - ```./start_mqtt_connect.sh```
     - This POSTs the ```mqtt_config.json``` file to the Connect node
+### Generating sample data with cpu2mqtt.py  script.
+
+The included ```cpu2mqtt.py``` python script uses the psutil and paho.mqtt python libraries to read CPU stats and send them to an MQTT broker
+  - ```python3 cpu2mqtt.py```
+  - The script uses your system hostname (e.g. the output from /bin/hostname) as the MQTT topic name.
+  - You can verify that data is being sent to the HiveMQ broker by going to http://www.hivemq.com/demos/websocket-client/
+        or running
+  ```
+  mosquitto_sub -h broker.hivemq.com -t 'HOSTNAME/#' -p 1883 -v
+  ```
+  where ```HOSTNAME``` is e.g. the output of /bin/hostname
+
 
 ## Transforming Metrics Data for Prometheus with ksqlDB
 The ```cpu2mqtt.py``` sample script generates JSON objects that look like this:
@@ -115,15 +108,15 @@ For a Prometheus gauge-style metric, we need to supply a record that looks like 
 ```
 This transformation can be applied to streaming data using ksqlDB.
 
-0. Create a new topic in Confluent Cloud
+1. Create a new topic in Confluent Cloud
   - This topic will hold a single record, which will include field/value pairs for your Prometheus Metric.
 
   ```
   ccloud kafka topic create cpu_percent_idle
   ```
-0. Create a producer.properties file
+1. Create a producer.properties file
   - Go to Confluent Cloud -> Select your environment and cluster 
-0. Populate this with a single record using the kafka-console-producer
+1. Populate this with a single record using the kafka-console-producer
   - Replace ```PRODUCER_BOOTSTRAP_SERVERS``` with the output from:
   ```
   cat my-connect-distributed.properties | grep producer\.bootstrap\.servers | awk -F= {'print $2'}
@@ -142,7 +135,7 @@ HOSTNAME/cpu_stats:{"name":"cpu_idle_percent","type":"gauge","device":"HOSTNAME"
 
 Hit ctrl-c after that line of input has been accepted.
 
-0. Create a ksqlDB application
+1. Create a ksqlDB application
   - In Confluent Cloud, go to ksqlDB and click "Add an Application"
   - Once the Application is created, open it and select "Editor"
   - Create a Stream from the mqtt data.  Set ```auto.offset.reset``` to ```Latest```
