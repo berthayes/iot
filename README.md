@@ -58,15 +58,15 @@ The Confluent MQTT Source connector assumes that you already have an MQTT broker
   
 ### Starting the MQTT Source Connector
 1. Create the ```mqtt-connect``` topic in Confluent Cloud
-  - In Confluent Cloud, go to Topics and click "Add a topic"
-  - Create a new topic named mqtt-connect
+    - In Confluent Cloud, go to Topics and click "Add a topic"
+    - Create a new topic named mqtt-connect
 1. Create a connect config file for the MQTT connector
-  - ```python3 create_mqtt_config.py```
-  - This creates a file aclled ```mqtt_config.json```
-  - This file is configured with the .properties files downloaded from Confluent Cloud.
+    - ```python3 create_mqtt_config.py```
+    - This creates a file aclled ```mqtt_config.json```
+    - This file is configured with the .properties files downloaded from Confluent Cloud.
 1. Start the MQTT source connector
-  - ```./start_mqtt_connect.sh```
-    - This POSTs the ```mqtt_config.json``` file to the Connect node
+    - ```./start_mqtt_connect.sh```
+      - This POSTs the ```mqtt_config.json``` file to the Connect node
 ### Generating sample data with cpu2mqtt.py  script.
 
 The included ```cpu2mqtt.py``` python script uses the psutil and paho.mqtt python libraries to read CPU stats and send them to an MQTT broker
