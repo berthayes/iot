@@ -7,13 +7,17 @@ A turnkey environment for sending IoT data to Confluent Cloud.
 - [Transforming Metrics Data for Prometheus with ksqlDB](https://github.com/berthayes/iot/#Transforming-Metrics-Data-for-Prometheus-with-ksqlDB)
 
 ## Overview
-This code is designed to create and configure four separate EC2 instances as:
-  - Confluent REST Proxy
-  - Confluent MQTT Connect Source
-  - Prometheus Connect Sink
-  - Prometheus Server
+By default, this code is designed to create and configure two separate EC2 instances as:
+  - [Confluent REST Proxy](https://docs.confluent.io/platform/current/kafka-rest/index.html)
+  - [Confluent MQTT Connect Source](https://www.confluent.io/hub/confluentinc/kafka-connect-mqtt)
 
-Once created, these hosts will automatically be configured for your cluster in Confluent Cloud.  Data from the Prometheus server can optionally be sent to Grafana.com which has a free tier and includes native Prometheus integration.
+Once created, these hosts will automatically be configured for your cluster in Confluent Cloud.  
+
+Optionally, two additional EC2 instances can be created and configured as:
+  - [Prometheus Connect Sink](https://www.confluent.io/hub/confluentinc/kafka-connect-prometheus-metrics)
+  - [Promethus Server](https://prometheus.io/)
+  
+Data from the Prometheus server can optionally be sent to Grafana.com which has a free tier and includes native Prometheus integration.
 
 ## Create Confluent Cloud Configs
 1. Go to your Confluent Cloud Cluster
