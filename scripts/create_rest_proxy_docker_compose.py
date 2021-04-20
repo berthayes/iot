@@ -42,6 +42,10 @@ if os.path.exists(file):
     except:
         print("I am slain!")
         exit()
+else:
+    print(file + " does not exist")
+    print("I am slain!")
+    exit()
 
 
 env = {}
@@ -66,5 +70,5 @@ services['rest-proxy'] = rest
 
 docker_compose_file = ruamel.yaml.round_trip_dump(yaml, explicit_start=True)
 
-with open('rest-docker-compose.yml', 'wt') as dc:
+with open('../rest-docker-compose.yml', 'wt') as dc:
     dc.write(str(docker_compose_file))

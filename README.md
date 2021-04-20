@@ -1,4 +1,4 @@
-# IoT  Demo & Quickstart 
+# IoT & Confluent Cloud Quickstart 
 A turnkey environment for sending IoT data to Confluent Cloud.
 - [Overview](https://github.com/berthayes/iot/#Overview)
 - [Create Confluent Cloud Configs](https://github.com/berthayes/iot/#Create-Confluent-Cloud-Configs)
