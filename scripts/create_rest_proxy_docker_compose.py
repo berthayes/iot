@@ -15,7 +15,7 @@ try:
 except:
     advertised_hostname = '0.0.0.0'
 
-file = 'ccloud-kafka-rest.properties'
+file = '../ccloud-kafka-rest.properties'
 # TODO: Make this not hard coded.
 
 if os.path.exists(file):
@@ -53,7 +53,7 @@ yaml['version'] = '2'
 version = {}
 services = {}
 rest = {}
-rest['image'] = 'confluentinc/cp-kafka-rest:6.1.0'
+rest['image'] = 'confluentinc/cp-kafka-rest:6.1.1'
 rest['hostname'] = 'rest-proxy'
 rest['container_name'] = 'kafka-rest-proxy'
 rest['ports'] = ["8082:8082"]

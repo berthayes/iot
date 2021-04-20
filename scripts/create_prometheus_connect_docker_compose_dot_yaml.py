@@ -16,7 +16,7 @@ try:
 except:
     advertised_hostname = '0.0.0.0'
 
-file = 'my-connect-distributed.properties'
+file = '../my-connect-distributed.properties'
 # TODO: Make this not hard coded.
 
 if os.path.exists(file):
@@ -63,7 +63,7 @@ yaml['version'] = '2'
 version = {}
 services = {}
 connect = {}
-connect['image'] = 'confluentinc/cp-server-connect:6.1.0'
+connect['image'] = 'confluentinc/cp-server-connect:6.1.1'
 connect['hostname'] = 'prometheus-connect'
 connect['container_name'] = 'prometheus-connect'
 connect['ports'] = ["8083:8083", "8889:8889"]
