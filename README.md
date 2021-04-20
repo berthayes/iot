@@ -9,12 +9,14 @@ A turnkey environment for sending IoT data to Confluent Cloud.
 ## Overview
 By default, this code is designed to create and configure two separate EC2 instances as:
   - [Confluent REST Proxy](https://docs.confluent.io/platform/current/kafka-rest/index.html)
-  - [Confluent MQTT Connect Source](https://www.confluent.io/hub/confluentinc/kafka-connect-mqtt)
+  - [Kafka Connect Node](https://docs.confluent.io/platform/current/connect/index.html)
+    - [Confluent MQTT Connector (Source & Sink)](https://www.confluent.io/hub/confluentinc/kafka-connect-mqtt) is installed.
 
 Once created, these hosts will automatically be configured for your cluster in Confluent Cloud.  
 
 Optionally, two additional EC2 instances can be created and configured as:
-  - [Prometheus Connect Sink](https://www.confluent.io/hub/confluentinc/kafka-connect-prometheus-metrics)
+  - [Kafka Connect Node](https://docs.confluent.io/platform/current/connect/index.html)
+    - [Prometheus Sink Connector](https://www.confluent.io/hub/confluentinc/kafka-connect-prometheus-metrics) is installed.
   - [Promethus Server](https://prometheus.io/)
   
 Data from the Prometheus server can optionally be sent to Grafana.com which has a free tier and includes native Prometheus integration.
