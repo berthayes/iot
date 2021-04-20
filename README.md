@@ -21,8 +21,8 @@ Optionally, two additional EC2 instances can be created and configured as:
   
 Data from the Prometheus server can optionally be sent to Grafana.com which has a free tier and includes native Prometheus integration.
 
-![Cloud IoT Architecture]
-(https://github.com/berthayes/iot/images/iot_arch.png)
+![Cloud IoT Architecture](https://github.com/berthayes/iot/blob/main/images/iot_arch.png)
+
 
 ## Create Confluent Cloud Configs
 1. Go to your Confluent Cloud Cluster
