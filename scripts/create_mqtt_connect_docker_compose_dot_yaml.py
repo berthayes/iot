@@ -16,7 +16,7 @@ try:
 except:
     advertised_hostname = '0.0.0.0'
 
-file = '../my-connect-distributed.properties'
+file = '/home/ubuntu/iot/my-connect-distributed.properties'
 # TODO: Make this not hard coded.
 
 if os.path.exists(file):

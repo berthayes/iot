@@ -15,7 +15,7 @@ try:
 except:
     advertised_hostname = '0.0.0.0'
 
-file = '../ccloud-kafka-rest.properties'
+file = '/home/ubuntu/iot/ccloud-kafka-rest.properties'
 # TODO: Make this not hard coded.
 
 if os.path.exists(file):
