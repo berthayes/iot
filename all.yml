@@ -46,9 +46,9 @@
       command: /usr/bin/python3 /home/ubuntu/iot/scripts/create_rest_proxy_docker_compose.py
     - name: Starting Docker
       shell:
-        cmd: docker-compose -f /home/ubuntu/iot/scripts/rest-docker-compose.yml up -d
+        cmd: docker-compose -f rest-docker-compose.yml up -d
 ###
-- name: Configure MQTT Source Connector
+- name: Configure MQTT Source Kafka Connect node
   hosts: kafka_connect_mqtt
   remote_user: root
   gather_facts: false
