@@ -4,7 +4,7 @@ A turnkey environment for sending IoT data to Confluent Cloud.
 - [Create Confluent Cloud Configs](https://github.com/berthayes/iot/#Create-Confluent-Cloud-Configs)
 - [Create Configured Containers](https://github.com/berthayes/iot/#Create-Configured-Containers)
 - [Metrics Data with MQTT](https://github.com/berthayes/iot/#metrics-data-with-mqtt)
-- [Transforming Metrics Data for Prometheus with ksqlDB](https://github.com/berthayes/iot/#Transforming-Metrics-Data-for-Prometheus-with-ksqlDB)
+- [Transforming Metrics Data for Prometheus with ksqlDB](https://github.com/berthayes/iot/blob/main/ksql-for-prometheus.md)
 
 ## Overview
 By default, this code is designed to create and configure two separate AWS EC2 instances as:
@@ -84,4 +84,5 @@ The included ```cpu2mqtt.py``` python script uses the psutil and paho.mqtt pytho
   ```
   where ```HOSTNAME``` is e.g. the output of /bin/hostname
 
-
+## Transforming IOT Data for Prometheus with ksqlDB
+This portion of the readme is moved [here](https://github.com/berthayes/iot/blob/main/ksql-for-prometheus.md)
