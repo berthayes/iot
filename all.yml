@@ -24,6 +24,11 @@
         name: ubuntu
         append: true
         groups: docker
+    - name: Cloning IoT GitHub repo
+      git:
+        repo: 'https://github.com/berthayes/iot.git'
+        dest: /home/ubuntu/iot
+###
 - name: Configure Confluent REST Proxy
   hosts: rest_proxy
   remote_user: root
@@ -33,21 +38,16 @@
     - name: Set the hostname to rest-proxy
       ansible.builtin.hostname:
         name: rest-proxy
-    - name: Copying create_rest_proxy_docker_compose.py
-      copy:
-        src: create_rest_proxy_docker_compose.py
-        dest: /home/ubuntu/create_rest_proxy_docker_compose.py
     - name: Copying ccloud-kafka-rest.properties
       copy:
         src: ccloud-kafka-rest.properties
-        dest: /home/ubuntu/ccloud-kafka-rest.properties
+        dest: /home/ubuntu/iot/ccloud-kafka-rest.properties
     - name: Creating docker-compose.yml file
-      script: create_rest_proxy_docker_compose.py
-      args:
-        executable: python3
+      command: /usr/bin/python3 /home/ubuntu/iot/scripts/create_rest_proxy_docker_compose.py
     - name: Starting Docker
       shell:
-        cmd: docker-compose -f rest-docker-compose.yml up -d
+        cmd: docker-compose -f /home/ubuntu/iot/scripts/rest-docker-compose.yml up -d
+###
 - name: Configure MQTT Source Connector
   hosts: kafka_connect_mqtt
   remote_user: root
@@ -57,21 +57,16 @@
     - name: Set the hostname to mqtt-connect
       ansible.builtin.hostname:
         name: mqtt-connect
-    - name: Copying create_mqtt_connect_docker_compose_dot_yaml.py
-      copy:
-        src: create_mqtt_connect_docker_compose_dot_yaml.py
-        dest: /home/ubuntu/create_mqtt_connect_docker_compose_dot_yaml.py
     - name: Copying my-connect-distributed.properties
       copy:
         src: my-connect-distributed.properties
-        dest: /home/ubuntu/my-connect-distributed.properties
+        dest: /home/ubuntu/iot/my-connect-distributed.properties
     - name: Creating docker-compose.yml file
-      script: create_mqtt_connect_docker_compose_dot_yaml.py
-      args:
-        executable: python3
+      command: /usr/bin/python3 /home/ubuntu/iot/scripts/create_mqtt_connect_docker_compose_dot_yaml.py
     - name: Starting Docker
       shell:
         cmd: docker-compose -f docker-compose.yml up -d
+###
 - name: Configure the Prometheus Sink Connector
   hosts: kafka_connect_prometheus
   remote_user: root
@@ -84,18 +79,13 @@
     - name: Copying my-connect-distributed.properties to prometheus connect
       copy:
         src: my-connect-distributed.properties
-        dest: my-connect-distributed.properties
-    - name: Copying create_prometheus_connect_docker_compose_dot_yaml.py
-      copy:
-        src: create_prometheus_connect_docker_compose_dot_yaml.py
-        dest: /home/ubuntu/create_prometheus_connect_docker_compose_dot_yaml.py
+        dest: /home/ubuntu/iot/my-connect-distributed.properties
     - name: Creating docker-compose.yml file
-      script: create_prometheus_connect_docker_compose_dot_yaml.py
-      args:
-        executable: python3
+      command: /usr/bin/python3 /home/ubuntu/iot/scripts/create_prometheus_connect_docker_compose_dot_yaml.py
     - name: Starting Docker
       shell:
         cmd: docker-compose -f docker-compose.yml up -d
+###
 - name: Configure the Prometheus Server
   hosts: prometheus_server
   remote_user: root
@@ -109,18 +99,8 @@
       copy:
         src: hosts.yml
         dest: /home/ubuntu/hosts.yml
-    - name: Copying prom_server_default.yml
-      copy:
-        src: prom_server_default.yml
-        dest: prom_server_default.yml
-    - name: Copying make_prometheus_server_config.py
-      copy:
-        src: make_prometheus_server_config.py
-        dest: make_prometheus_server_config.py
     - name: Creating prometheus.yml
-      script: make_prometheus_server_config.py
-      args:
-        executable: python3
+      command: /usr/bin/python3 /home/ubuntu/iot/scripts/make_prometheus_server_config.py
     - name: installing prometheus
       apt:
         name: prometheus
