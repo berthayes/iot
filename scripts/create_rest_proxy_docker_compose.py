@@ -70,5 +70,5 @@ services['rest-proxy'] = rest
 
 docker_compose_file = ruamel.yaml.round_trip_dump(yaml, explicit_start=True)
 
-with open('../rest-docker-compose.yml', 'wt') as dc:
+with open('rest-docker-compose.yml', 'wt') as dc:
     dc.write(str(docker_compose_file))
