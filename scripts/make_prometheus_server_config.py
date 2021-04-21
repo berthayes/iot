@@ -16,7 +16,9 @@ host = list(datadict.keys())[0]
 #print(host)
 host_uri = host + ":8889"
 
-prom = open("prom_server_default.yml", "r")
+prom_server_default = '/home/ubuntu/iot/scripts/prom_server_default.yml'
+# TODO: make this come from a command line arg
+prom = open(prom_server_default, "r")
 ymlprom = yaml.load(prom)
 
 ymlprom['scrape_configs'][1]['static_configs'][0]['targets'][0] = host_uri
