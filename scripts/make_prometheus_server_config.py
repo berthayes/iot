@@ -7,7 +7,9 @@
 from ruamel.yaml import YAML
 yaml = YAML()
 
-hostinfo = open("hosts.yml", "r")
+ansible_inventory = '/home/ubuntu/hosts.yml'
+# TODO: make this come from a command line arg
+hostinfo = open(ansible_inventory, "r")
 ymldata = yaml.load(hostinfo)
 
 hostdict = ymldata['kafka_connect_prometheus']['hosts']
