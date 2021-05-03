@@ -13,6 +13,7 @@ By default, this code is designed to create and configure two separate AWS EC2 i
   - [Confluent REST Proxy](https://docs.confluent.io/platform/current/kafka-rest/index.html)
   - [Kafka Connect Node](https://docs.confluent.io/platform/current/connect/index.html)
     - [Confluent MQTT Connector (Source & Sink)](https://www.confluent.io/hub/confluentinc/kafka-connect-mqtt) is installed.
+      - Requires an existing MQTT Broker (e.g. [hivemq.com](https://www.hivemq.com))
 
 Once created, these hosts will be automatically configured for your cluster in Confluent Cloud.  This automation is achieved with an Ansible playbook using the scripts included in this repository.  
 
