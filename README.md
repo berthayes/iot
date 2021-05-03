@@ -5,6 +5,8 @@ A turnkey environment for sending IoT data to Confluent Cloud.
 - [Create Configured Containers](https://github.com/berthayes/iot/#Create-Configured-Containers)
 - [Metrics Data with MQTT](https://github.com/berthayes/iot/#metrics-data-with-mqtt)
 - [Transforming Metrics Data for Prometheus with ksqlDB](https://github.com/berthayes/iot/blob/main/ksql-for-prometheus.md)
+- [Try Confluent Cloud for Free](https://www.confluent.io/confluent-cloud/tryfree)
+- [Kafka Tutorials & Examples](https://developer.confluent.io/#kafka-tutorials-and-examples)
 
 ## Overview
 By default, this code is designed to create and configure two separate AWS EC2 instances as:
