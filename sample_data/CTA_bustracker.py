@@ -25,12 +25,12 @@ hostdict = ymldata['rest_proxy']['hosts']
 datadict = dict(hostdict)
 rest_proxy_host = list(datadict.keys())[0]
 
-topic = cfg.get('MDW', 'kafka_topic')
+topic = cfg.get('cta', 'kafka_topic')
 rest_headers = {'Content-Type': 'application/vnd.kafka.json.v2+json', 'Accept': 'application/vnd.kafka.v2+json'}
 rest_url = "http://" + rest_proxy_host + ":8082/topics/" + topic
 
 # CTA Bus Tracker API values
-api_key = cfg.get('MDW', 'api_key')
+api_key = cfg.get('cta', 'api_key')
 getvehicles_url = 'http://ctabustracker.com/bustime/api/v2/getvehicles'
 
 # Format the API request and parse the response
