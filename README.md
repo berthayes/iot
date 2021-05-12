@@ -41,6 +41,7 @@ Data from the Prometheus server can optionally be sent to Grafana.com which has 
     - Create Schema Registry API key & secret
     - Click the checkbox for "Requires Enterprise License"
       - Make sure "show API keys" is checked (default)
+    - Click "Generate Config"
     - Click Copy, and paste the contents into a file named ```my-connect-distributed.properties```
 1. CLI and Tools -> CLI Tools
     - Click Create API & Secret
