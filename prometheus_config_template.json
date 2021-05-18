@@ -14,7 +14,7 @@
     "reporter.bootstrap.servers":"BOOTSTRAP:9092",
     "reporter.error.topic.name": "",
     "reporter.result.topic.name": "",
-    "prometheus.listener.url": "http://ec2-3-142-236-192.us-east-2.compute.amazonaws.com:8889/metrics",
+    "prometheus.listener.url": "http://XXXXXXXXX",
     "key.converter": "org.apache.kafka.connect.storage.StringConverter",
     "value.converter": "io.confluent.connect.avro.AvroConverter",
     "value.converter.basic.auth.credentials.source": "USER_INFO",
