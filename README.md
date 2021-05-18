@@ -1,6 +1,7 @@
 # IoT & Confluent Cloud Quickstart 
 A turnkey environment for sending IoT data to Confluent Cloud.
 - [Overview](https://github.com/berthayes/iot/#Overview)
+- [Configuring Your Environment](https://github.com/berthayes/iot/#Configuring-Your-Environment)
 - [Create Confluent Cloud Configs](https://github.com/berthayes/iot/#Create-Confluent-Cloud-Configs)
 - [Create Configured Containers](https://github.com/berthayes/iot/#Create-Configured-Containers)
 - [Metrics Data with MQTT](https://github.com/berthayes/iot/#metrics-data-with-mqtt)
@@ -25,6 +26,22 @@ Optionally, two additional EC2 instances can be created and configured as:
 Data from the Prometheus server can optionally be sent to Grafana.com which has a free tier and includes native Prometheus integration.
 
 ![Cloud IoT Architecture](https://github.com/berthayes/iot/blob/main/images/iot_arch.png)
+
+## Configuring Your Environment
+### Editing yak_shaving.conf
+
+The ```yak_shaving.conf``` file is used by multiple scripts to create the example environment in AWS.
+
+- The ```[aws_common]``` section requires details unique to your own AWS environment.
+
+1. Create a Security Group in the EC2 Management Console that allows inbound access from your network to the following ports:
+    - TCP 22 - SSH - Used by Ansible for deployment and shell access for user troubleshooting
+    - TCP 8083 - Used for the REST API for Kafka Connect
+    - TCP 8082 - Used for the Confluent REST Proxy
+    - TCP 8089 - Used for the Prometheus Sink Connector and the Prometheus Server (optional)
+1. The AMI used is Ubuntu 18.04 LTS, but Ubuntu 20.04 will work and Debian 10 might even work too.
+1. The ```owner_name```, ```your_pem```, ```your_email```, and ```cluster_name``` fields are all used by the ```create_aws_instances.py``` script to create and correctly identify the EC2 instances.  Note that ```your_pem``` is not the path to your EC2 SSH key, but rather the name of the Key pair name of an instance in the EC2 console.
+
 
 
 ## Create Confluent Cloud Configs
@@ -71,7 +88,7 @@ The Confluent MQTT Source connector assumes that you already have an MQTT broker
     - Create a new topic named mqtt-connect
 1. Create a connect config file for the MQTT connector
     - ```python3 create_mqtt_config.py```
-    - This creates a file aclled ```mqtt_config.json```
+    - This creates a file called ```mqtt_config.json```
     - This file is configured with the .properties files downloaded from Confluent Cloud.
 1. Start the MQTT source connector
     - ```./start_mqtt_connect.sh```
