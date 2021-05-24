@@ -80,7 +80,7 @@
     - name: Create config file for mqtt source connector
       command: /usr/bin/python3 /home/ubuntu/iot/create_mqtt_config.py
     - name: Start MQTT Source Connector
-    - command: /bin/sh /home/ubuntu/iot/start_mqtt_connect.sh
+      command: /bin/sh /home/ubuntu/iot/start_mqtt_connect.sh
 ###
 - name: Configure the Prometheus Sink Connector
   hosts: kafka_connect_prometheus
