@@ -28,6 +28,14 @@
       git:
         repo: 'https://github.com/berthayes/iot.git'
         dest: /home/ubuntu/iot
+    - name: Copying hosts.yml
+      copy:
+        src: hosts.yml
+        dest: /home/ubuntu/iot/hosts.yml
+    - name: Copying yak_shaving.conf
+      copy:
+        src: yak_shaving.conf
+        dest: /home/ubuntu/iot/yak_shaving.conf
 ###
 - name: Configure Confluent REST Proxy
   hosts: rest_proxy
@@ -66,6 +74,13 @@
     - name: Starting Docker
       shell:
         cmd: docker-compose -f docker-compose.yml up -d
+    - name: Wait 60 seconds for connect to start up
+      pause:
+        seconds: 60
+    - name: Create config file for mqtt source connector
+      command: /usr/bin/python3 /home/ubuntu/iot/create_mqtt_config.py
+    - name: Start MQTT Source Connector
+    - command: /bin/sh /home/ubuntu/iot/start_mqtt_connect.sh
 ###
 - name: Configure the Prometheus Sink Connector
   hosts: kafka_connect_prometheus
@@ -85,6 +100,13 @@
     - name: Starting Docker
       shell:
         cmd: docker-compose -f docker-compose.yml up -d
+    - name: Create config file for Prometheus Sink Connector
+      command: /usr/bin/python3 /home/ubuntu/iot/create_prometheus_sink_config.py
+    - name: Wait 60 seconds for connector to start up
+      pause:
+        seconds: 60
+    - name: Start Prometheus Sink Connector
+      command: /bin/sh /home/ubuntu/iot/start_prometheus_sink_connect.sh
 ###
 - name: Configure the Prometheus Server
   hosts: prometheus_server
@@ -95,10 +117,6 @@
     - name: Set the hostname to prometheus-server
       ansible.builtin.hostname:
         name: prometheus-server
-    - name: Copying hosts.yml
-      copy:
-        src: hosts.yml
-        dest: /home/ubuntu/hosts.yml
     - name: Creating prometheus.yml
       command: /usr/bin/python3 /home/ubuntu/iot/scripts/make_prometheus_server_config.py
     - name: installing prometheus
@@ -111,4 +129,19 @@
     - name: starting prometheus server
       ansible.builtin.command:
         cmd: /usr/bin/prometheus --config.file="/home/ubuntu/prometheus.yml"
+###
+- name: Configuring the Postgres server
+  hosts: postgres
+  remote_user: root
+  gather_facts: false
+  tags: postgres_server
+  tasks:
+    - name: Copying postgres-docker-compose.yml
+      copy:
+        src: postgres-docker-compose.yml
+        dest: /home/ubuntu/postgres-docker-compose.yml
+    - name: Starting Docker
+      shell:
+        cmd: docker-compose -f postgres-docker-compose.yml up -d
+
 

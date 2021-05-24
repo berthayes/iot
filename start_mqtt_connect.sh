@@ -4,7 +4,9 @@
 # a simple script to connect to the MQTT source connect node and
 # POST a JSON file with config properties for the Confluent MQTT source connector
 
-hostname=$(cat hosts.yml| yq e '.kafka_connect_mqtt.hosts' - | sed s'/.$//')
+#hostname=$(cat hosts.yml| yq e '.kafka_connect_mqtt.hosts' - | sed s'/.$//')
+
+hostname="localhost"
 
 echo "hostname is " && echo $hostname
 echo "Making Connection to MQTT Server"

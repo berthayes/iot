@@ -6,9 +6,10 @@
 # to start the Prometheus sink connector
 
 
-hostname=$(cat hosts.yml| yq e '.kafka_connect_prometheus.hosts' - | sed s'/.$//')
+#hostname=$(cat hosts.yml| yq e '.kafka_connect_prometheus.hosts' - | sed s'/.$//')
 
-echo "hostname is " && echo $hostname
+#echo "hostname is " && echo $hostname
+hostname="localhost"
 echo "Making Connection to Prometheus Connect Sink node"
 curl $hostname:8083/connectors -X POST -H "Content-Type: application/json" -d @prom_config.json
 
