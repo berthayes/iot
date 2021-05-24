@@ -9,10 +9,10 @@ import json
 from configparser import ConfigParser
 import socket
 
-connect_conf = "my-connect-distributed.properties"
-mqtt_conf_template = "mqtt_config_template.json"
-mqtt_generated_config = "mqtt_config.json"
-yak_conf = "./yak_shaving.conf"
+connect_conf = "/home/ubuntu/iot/my-connect-distributed.properties"
+mqtt_conf_template = "/home/ubuntu/iot/mqtt_config_template.json"
+mqtt_generated_config = "/home/ubuntu/iot/mqtt_config.json"
+yak_conf = "/home/ubuntu/iot/yak_shaving.conf"
 
 with tempfile.NamedTemporaryFile(delete=False, mode='wt') as t:
     t.write('[conf]')
