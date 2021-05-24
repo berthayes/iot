@@ -144,6 +144,17 @@ def create_rest_proxy_opts():
     }
     return(rest_proxy_opts)
 
+def create_postgres_opts():
+    InstanceType = cfg.get('postgres', 'InstanceType')
+    volume_size = cfg.get('postgres', 'volume_size')
+    node_job = "postgres"
+    postgres_opts = {
+        'InstanceType': InstanceType,
+        'volume_size': volume_size,
+        'node_job': node_job
+    }
+    return(postgres_opts)
+
 # TODO: simplify this with a loop?
 if int(cfg.get('kafka_connect_mqtt', 'node_count')) > 0:
     node_count = int(cfg.get('kafka_connect_mqtt', 'node_count'))
@@ -169,4 +180,8 @@ if int(cfg.get('rest_proxy', 'node_count')) > 0:
     node_opts = create_rest_proxy_opts()
     create_instance(aws_opts, node_opts, node_count)
 
-
+if int(cfg.get('postgres', 'node_count')) > 0:
+    node_count = int(cfg.get('postgres', 'node_count'))
+    aws_opts = make_aws_common_config_dict()
+    node_opts = create_postgres_opts()
+    create_instance(aws_opts, node_opts, node_count)
