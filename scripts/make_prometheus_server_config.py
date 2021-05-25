@@ -7,7 +7,7 @@
 from ruamel.yaml import YAML
 yaml = YAML()
 
-ansible_inventory = '/home/ubuntu/hosts.yml'
+ansible_inventory = '/home/ubuntu/iot/hosts.yml'
 # TODO: make this come from a command line arg
 hostinfo = open(ansible_inventory, "r")
 ymldata = yaml.load(hostinfo)
