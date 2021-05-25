@@ -36,7 +36,7 @@ api_key = cfg.get('conf', 'sasl.jaas.config')
 cfg = ConfigParser()
 cfg.read(yak_conf)
 
-prom_server = cfg.get('kafka_connect_prometheus', 'prom_server')
+#prom_server = cfg.get('kafka_connect_prometheus', 'prom_server')
 kafka_topic = cfg.get('kafka_connect_prometheus', 'kafka_topic')
 
 with open(prom_conf_template, 'r') as f:
