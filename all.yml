@@ -142,6 +142,6 @@
         dest: /home/ubuntu/iot/postgres-docker-compose.yml
     - name: Starting Docker
       shell:
-        cmd: docker-compose -f /home/ubntu/iot/postgres-docker-compose.yml up -d
+        cmd: docker-compose -f /home/ubuntu/iot/postgres-docker-compose.yml up -d
 
 
