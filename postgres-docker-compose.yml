@@ -1,0 +1,19 @@
+---
+version: '2'
+services:
+  postgres:
+    # *-----------------------------*
+    # To connect to the DB:
+    #   docker exec -it postgres bash -c 'psql -U $POSTGRES_USER $POSTGRES_DB'
+    # *-----------------------------*
+    image: debezium/postgres:12
+    container_name: postgres
+    hostname: postgres
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+  #    volumes:
+  #     - ./data/postgres:/docker-entrypoint-initdb.d/
+

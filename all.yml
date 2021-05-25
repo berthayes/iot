@@ -139,9 +139,9 @@
     - name: Copying postgres-docker-compose.yml
       copy:
         src: postgres-docker-compose.yml
-        dest: /home/ubuntu/postgres-docker-compose.yml
+        dest: /home/ubuntu/iot/postgres-docker-compose.yml
     - name: Starting Docker
       shell:
-        cmd: docker-compose -f postgres-docker-compose.yml up -d
+        cmd: docker-compose -f /home/ubntu/iot/postgres-docker-compose.yml up -d
 
 
