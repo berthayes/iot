@@ -56,3 +56,37 @@ AS_VALUE(VID) AS vehicleid,
 UNIX_TIMESTAMP(PARSE_TIMESTAMP(TMSTMP, 'yyyyMMdd HH:mm:ss', 'America/Chicago'))/1000 AS epoch
 FROM BUS_STREAM PARTITION BY VID;
 ```
+
+This new topic, ```bustracker_avro``` can sent to a Postgres database using Postgres Sink fully managed connector in Confluent Cloud.
+
+Configure the Postgres Sink Connector with the following values, substituting the Postgres server listed in your hosts.yml file for connection.host.
+
+    topics: bustracker_avro,
+    input.data.format: AVRO,
+    connector.class: PostgresSink,
+    name: PostgresSinkConnector,
+    connection.host: XXXXXXXXXXX.compute.amazonaws.com,
+    connection.port: 5432,
+    connection.user: postgres,
+    db.name: bustracker,
+    ssl.mode: prefer,
+    insert.mode: UPSERT,
+    db.timezone: America/Chicago,
+    pk.mode: record_value,
+    auto.create: true,
+    auto.evolve: true,
+    tasks.max: 1
+
+## Mapping Bus Routes in Grafana
+
+[Grafana.com](https://grafana.com) has a freemium model that allows developers and testers to run a few of their services for fee.
+
+Go to Grafana.com and select "My Account" where you'll be redirected to the Grafana Cloud Portal.
+
+Log In to Grafana.
+
+Within Grafana, you can [add a data source](https://grafana.com/docs/grafana/next/datasources/add-a-data-source/?utm_source=grafana_gettingstarted)
+
+If you don't already see it, search for Postgres and add it.  Once added, configure it as such:
+
+![PostGres for Grafana](https://github.com/berthayes/iot/blob/main/images/grafana_postgres.png)
