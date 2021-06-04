@@ -14,6 +14,7 @@ cfg = ConfigParser()
 cfg.read('yak_shaving.conf')
 
 pem = cfg.get('aws_common', 'your_pem')
+path_to_pem = cfg.get('aws_common', 'path_to_pem')
 cluster_name = cfg.get('aws_common', 'cluster_name')
 
 ec2 = boto3.client('ec2')
@@ -100,7 +101,7 @@ vars['vars'] = {
     'ansible_connection': 'ssh',
     'ansible_user': 'ubuntu',
     'ansible_become': 'true',
-    'ansible_ssh_private_key_file': '~/aws.pem'
+    'ansible_ssh_private_key_file': path_to_pem
 }
 
 all['all'] = vars
