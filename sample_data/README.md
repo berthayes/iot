@@ -87,6 +87,14 @@ Log In to Grafana.
 
 Within Grafana, you can [add a data source](https://grafana.com/docs/grafana/next/datasources/add-a-data-source/?utm_source=grafana_gettingstarted)
 
-If you don't already see it, search for Postgres and add it.  Once added, configure it as such:
+If you don't already see it, search for Postgres and add it.  Once added, configure it accordingly, using the Postgres server hostname in your ```hosts.yml``` file:
 
 ![PostGres for Grafana](https://github.com/berthayes/iot/blob/main/images/grafana_postgres.png)
+
+After you've tested and saved the data source, you can  query it to power a Grafana dashboard showing a single Vehicle's movement on a map using the [TrackMap panel](https://grafana.com/grafana/plugins/pr0ps-trackmap-panel/) 
+
+![Mapping Bus 1510](https://github.com/berthayes/iot/blob/main/images/mapping_bus1510.png)
+
+Or make a more traditional graph showing the number of delayed buses.
+
+![Delayed Buses](https://github.com/berthayes/iot/blob/main/images/delayed_buses.png)
