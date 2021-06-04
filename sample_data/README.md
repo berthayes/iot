@@ -1,3 +1,58 @@
 # Generating sample IoT data
 
 If you don't have a streaming source for IoT data, the attached scripts can help.
+## CTA_bustracker.py
+- Make sure you have an API key from CTA!  See the "How to get an API key" section of the [Bus Tracker API Overview](https://www.transitchicago.com/developers/bustracker/).
+
+This script uses your API key and polls the CTA Bus Tracker API every 30 seconds for details on 10 different routes; this data is then parsed out by Vehicle ID. The results are JSON objects that look like this:
+
+```json
+{
+  "vid": "1742",
+  "tmstmp": "20210604 12:55:50",
+  "lat": "41.89198067847719",
+  "lon": "-87.63119506835938",
+  "hdg": "187",
+  "pid": 3936,
+  "rt": "22",
+  "des": "Harrison",
+  "pdist": 50514,
+  "dly": false,
+  "tatripid": "203968",
+  "tablockid": "N22 -593",
+  "zone": ""
+}
+```
+
+Each JSON object is sent to the Confluent REST Proxy and ultimately to Confluent Cloud, using the ```vid``` value (Vehicle ID) as the key for each record.
+
+Using ksqlDB, this data can be parsed and formatted as AVRO.  This creates a new topic which can be sent downstream to a Postgres server, which can then feed a Grafana Dashboard.
+
+First, create a Stream from this topic:
+
+```sql
+CREATE STREAM bus_stream (
+vid INT,
+tmstmp VARCHAR,
+lat DOUBLE(17,15),
+lon DOUBLE(17,15),
+hdg VARCHAR,
+pid INT,
+rt VARCHAR,
+des VARCHAR,
+pdist INT,
+dly BOOLEAN,
+tatripid VARCHAR,
+tablockid VARCHAR,
+zone VARCHAR)
+WITH (KAFKA_TOPIC='bus-data', VALUE_FORMAT='JSON');
+```
+
+This ksql query takes the stream created above, and creates a new topic that is AVRO formatted and keyed by the ```VID``` value, which gets recreated as ```vehicleid``` in the value of each record:
+```sql
+CREATE STREAM bustracker_avro WITH (KAFKA_TOPIC='bustracker_avro', VALUE_FORMAT='AVRO') AS
+SELECT *,
+AS_VALUE(VID) AS vehicleid,
+UNIX_TIMESTAMP(PARSE_TIMESTAMP(TMSTMP, 'yyyyMMdd HH:mm:ss', 'America/Chicago'))/1000 AS epoch
+FROM BUS_STREAM PARTITION BY VID;
+```
