@@ -28,6 +28,8 @@ Data from the Prometheus server can optionally be sent to Grafana.com which has 
 ![Cloud IoT Architecture](https://github.com/berthayes/iot/blob/main/images/iot_arch.png)
 
 ## Configuring Your Environment
+### Prerequisites and assumptions
+The python scripts that talk to AWS use the boto3 library, which by default looks for your AWS credentials and confg in ```~/.aws/credentials``` and ```~/.aws.config``` . If you don't have these files already, see [this page](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html) for information on how to get them.
 ### Editing yak_shaving.conf
 
 The ```yak_shaving.conf``` file is used by multiple scripts to create the example environment in AWS.
@@ -40,7 +42,7 @@ The ```yak_shaving.conf``` file is used by multiple scripts to create the exampl
     - TCP 8082 - Used for the Confluent REST Proxy
     - TCP 8089 - Used for the Prometheus Sink Connector and the Prometheus Server (optional)
 1. The AMI used is Ubuntu 18.04 LTS, but Ubuntu 20.04 will work and Debian 10 might even work too.
-1. The ```owner_name```, ```your_pem```, ```your_email```, and ```cluster_name``` fields are all used by the ```create_aws_instances.py``` script to create and correctly identify the EC2 instances.  Note that ```your_pem``` is not the path to your EC2 SSH key, but rather the name of the Key pair name of an instance in the EC2 console.
+1. The ```owner_name```, ```your_pem```, ```your_email```, and ```cluster_name``` fields are all used by the ```create_aws_instances.py``` script to create and correctly identify the EC2 instances.  Note that ```your_pem``` is not the path to your EC2 SSH key, but rather the name of the Key pair name of an instance in the EC2 console.  ```path_to_pem``` is the file path to your AWS SSH key - this is used by Ansible when configuring hosts.
 
 
 
