@@ -8,6 +8,7 @@
 
 hostname="localhost"
 
+
 echo "hostname is " && echo $hostname
 echo "Making Connection to MQTT Server"
 curl $hostname:8083/connectors -X POST -H "Content-Type: application/json" -d @mqtt_config.json
